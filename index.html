@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>حصن المسلم التفاعلي - الشيخ عبد الرزاق البدر</title>
+    <style>
+        :root {
+            --morning-bg: #e3f2fd;
+            --morning-card: #ffffff;
+            --morning-text: #0d47a1;
+            --night-bg: #1a237e;
+            --night-card: #283593;
+            --night-text: #e8eaf6;
+            --success: #4caf50;
+        }
+        body {
+            font-family: 'Segoe UI', Tahoma, sans-serif;
+            transition: 0.5s;
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
+        }
+        body.morning { background-color: var(--morning-bg); color: #333; }
+        body.night { background-color: var(--night-bg); color: white; }
+
+        .header { text-align: center; margin-bottom: 30px; }
+        .mode-switch {
+            padding: 10px 25px;
+            border-radius: 25px;
+            border: none;
+            cursor: pointer;
+            font-weight: bold;
+            font-size: 1.1em;
+            margin-bottom: 20px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 20px;
+            width: 100%;
+            max-width: 1100px;
+        }
+
+        .card {
+            background: white;
+            padding: 20px;
+            border-radius: 15px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            position: relative;
+            border-bottom: 5px solid #ddd;
+            color: #333;
+            transition: 0.3s;
+        }
+        body.night .card { background: var(--night-card); color: white; border-bottom-color: #3f51b5; }
+
+        .card.completed { border-color: var(--success) !important; background: #e8f5e9 !important; }
+        body.night .card.completed { background: #1b5e20 !important; }
+
+        .count-badge {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            background: #eee;
+            padding: 5px 12px;
+            border-radius: 15px;
+            font-size: 0.8em;
+            font-weight: bold;
+            color: #555;
+        }
+
+        .btn-counter {
+            width: 100%;
+            padding: 12px;
+            margin-top: 15px;
+            border: none;
+            border-radius: 8px;
+            background: var(--morning-text);
+            color: white;
+            font-size: 1.1em;
+            cursor: pointer;
+        }
+        body.night .btn-counter { background: #5c6bc0; }
+        
+        .btn-counter:active { transform: scale(0.98); }
+
+        .source-note { font-size: 0.8em; color: #78909c; margin-top: 40px; text-align: center; }
+    </style>
+</head>
+<body class="morning" id="mainBody">
+
+    <div class="header">
+        <h1>🛡️ حصن المسلم التفاعلي</h1>
+        <p>بناءً على منهج الشيخ عبد الرزاق البدر حفظه الله</p>
+        <button class="mode-switch" id="toggleBtn" onclick="toggleMode()">تحويل إلى أذكار المساء 🌙</button>
+    </div>
+
+    <div class="grid" id="azkarContainer">
+        </div>
+
+    <div class="source-note">
+        المصدر: مذكرات الشيخ عبد الرزاق البدر في أذكار الصباح والمساء - تجديد التوحيد وتقوية الصلة بالله.
+    </div>
+
+    <script>
+        const azkarData = [
+            { text: "آية الكرسي (مرة واحدة)", target: 1, info: "تُجير من الجن حتى يصبح/يمسي" },
+            { text: "سورة الإخلاص والمعوذتين", target: 3, info: "تكفي من كل شيء" },
+            { text: "اللهم أنت ربي لا إله إلا أنت.. (سيد الاستغفار)", target: 1, info: "موجبة للجنة لمن مات في يومه" },
+            { text: "سبحان الله وبحمده", target: 100, info: "حط الخطايا ورفعة الدرجات" },
+            { text: "لا إله إلا الله وحده لا شريك له..", target: 10, info: "حفظ من الشيطان وأجر عظيم" },
+            { text: "بسم الله الذي لا يضر مع اسمه شيء..", target: 3, info: "حماية من ضرر كل شيء" },
+            { text: "رضيت بالله رباً وبالإسلام ديناً..", target: 3, info: "حق على الله أن يرضيه" },
+            { text: "يا حي يا قيوم برحمتك أستغيث..", target: 1, info: "إصلاح الشأن كله" }
+        ];
+
+        let isMorning = true;
+
+        function renderAzkar() {
+            const container = document.getElementById('azkarContainer');
+            container.innerHTML = '';
+            azkarData.forEach((zikr, index) => {
+                container.innerHTML += `
+                    <div class="card" id="card-${index}">
+                        <div class="count-badge">المطلوب: ${zikr.target}</div>
+                        <p>${zikr.text}</p>
+                        <small style="opacity: 0.8">${zikr.info}</small>
+                        <button class="btn-counter" onclick="doCount(${index}, ${zikr.target})">
+                            العدد الحالي: <span id="count-${index}">0</span>
+                        </button>
+                    </div>
+                `;
+            });
+        }
+
+        function doCount(index, target) {
+            const countElement = document.getElementById(`count-${index}`);
+            let current = parseInt(countElement.innerText);
+            if (current < target) {
+                current++;
+                countElement.innerText = current;
+                if (current === target) {
+                    document.getElementById(`card-${index}`).classList.add('completed');
+                }
+            }
+        }
+
+        function toggleMode() {
+            const body = document.getElementById('mainBody');
+            const btn = document.getElementById('toggleBtn');
+            isMorning = !isMorning;
+
+            if (isMorning) {
+                body.className = 'morning';
+                btn.innerText = 'تحويل إلى أذكار المساء 🌙';
+                btn.style.background = '#0d47a1';
+                btn.style.color = 'white';
+            } else {
+                body.className = 'night';
+                btn.innerText = 'تحويل إلى أذكار الصباح ☀️';
+                btn.style.background = '#ffca28';
+                btn.style.color = '#333';
+            }
+            renderAzkar(); // إعادة ضبط العدادات عند التحويل
+        }
+
+        renderAzkar();
+    </script>
+</body>
+</html>
