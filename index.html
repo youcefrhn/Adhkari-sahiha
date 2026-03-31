@@ -3,173 +3,189 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>حصن المسلم التفاعلي - الشيخ عبد الرزاق البدر</title>
+    <title>أذكاري الصحيحة - فوائد وأذكار</title>
     <style>
         :root {
-            --morning-bg: #e3f2fd;
+            --morning-bg: #f0f7ff;
             --morning-card: #ffffff;
-            --morning-text: #0d47a1;
-            --night-bg: #1a237e;
-            --night-card: #283593;
-            --night-text: #e8eaf6;
-            --success: #4caf50;
+            --morning-accent: #0288d1;
+            --night-bg: #0d1b2a;
+            --night-card: #1b263b;
+            --night-accent: #fbc02d;
+            --success: #2e7d32;
         }
         body {
             font-family: 'Segoe UI', Tahoma, sans-serif;
-            transition: 0.5s;
             margin: 0;
             padding: 20px;
+            transition: 0.5s;
             display: flex;
             flex-direction: column;
             align-items: center;
-            min-height: 100vh;
         }
         body.morning { background-color: var(--morning-bg); color: #333; }
-        body.night { background-color: var(--night-bg); color: white; }
+        body.night { background-color: var(--night-bg); color: #e0e1dd; }
 
-        .header { text-align: center; margin-bottom: 30px; }
-        .mode-switch {
-            padding: 10px 25px;
-            border-radius: 25px;
+        .container { max-width: 850px; width: 100%; }
+        header { text-align: center; margin-bottom: 40px; border-bottom: 2px solid rgba(0,0,0,0.1); padding-bottom: 20px; }
+        
+        .mode-btn {
+            padding: 15px 30px;
+            border-radius: 50px;
             border: none;
-            cursor: pointer;
             font-weight: bold;
-            font-size: 1.1em;
+            cursor: pointer;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.3);
             margin-bottom: 20px;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.2);
-        }
-
-        .grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
-            gap: 20px;
-            width: 100%;
-            max-width: 1100px;
+            font-size: 1.1em;
         }
 
         .card {
             background: white;
-            padding: 20px;
-            border-radius: 15px;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
-            position: relative;
-            border-bottom: 5px solid #ddd;
+            padding: 25px;
+            border-radius: 18px;
+            margin-bottom: 20px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.08);
             color: #333;
-            transition: 0.3s;
+            border-right: 10px solid #cfd8dc;
+            transition: 0.4s;
         }
-        body.night .card { background: var(--night-card); color: white; border-bottom-color: #3f51b5; }
+        body.night .card { background: var(--night-card); color: #e0e1dd; border-right-color: #415a77; }
+        .card.completed { border-right-color: var(--success) !important; background: #f1f8e9 !important; transform: scale(0.98); }
+        body.night .card.completed { background: #1b4332 !important; }
 
-        .card.completed { border-color: var(--success) !important; background: #e8f5e9 !important; }
-        body.night .card.completed { background: #1b5e20 !important; }
-
-        .count-badge {
-            position: absolute;
-            top: 10px;
-            left: 10px;
-            background: #eee;
-            padding: 5px 12px;
-            border-radius: 15px;
-            font-size: 0.8em;
-            font-weight: bold;
-            color: #555;
+        .counter-area {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-top: 20px;
+            padding-top: 15px;
+            border-top: 1px dashed #ccc;
         }
-
-        .btn-counter {
-            width: 100%;
-            padding: 12px;
-            margin-top: 15px;
+        .btn-count {
+            padding: 10px 25px;
             border: none;
-            border-radius: 8px;
-            background: var(--morning-text);
+            border-radius: 12px;
+            background: var(--morning-accent);
             color: white;
-            font-size: 1.1em;
             cursor: pointer;
+            font-size: 1.2em;
+            font-weight: bold;
         }
-        body.night .btn-counter { background: #5c6bc0; }
+        body.night .btn-count { background: var(--night-accent); color: #1b263b; }
         
-        .btn-counter:active { transform: scale(0.98); }
+        .benefits-section {
+            background: #fff8e1;
+            padding: 30px;
+            border-radius: 20px;
+            margin-top: 50px;
+            border: 2px solid #ffe082;
+            color: #5d4037;
+        }
+        body.night .benefits-section { background: #1b263b; border-color: #415a77; color: #e0e1dd; }
 
-        .source-note { font-size: 0.8em; color: #78909c; margin-top: 40px; text-align: center; }
+        .benefit-item { margin-bottom: 15px; display: flex; align-items: flex-start; }
+        .benefit-item::before { content: "⭐"; margin-left: 10px; }
+
+        .reset-btn { background: #d32f2f; color: white; padding: 12px 30px; border: none; border-radius: 10px; margin: 30px; cursor: pointer; font-weight: bold; }
+        .info-text { font-size: 0.9em; color: #546e7a; margin-top: 8px; line-height: 1.5; }
+        body.night .info-text { color: #b0bec5; }
     </style>
 </head>
-<body class="morning" id="mainBody">
+<body class="morning" id="body">
 
-    <div class="header">
-        <h1>🛡️ حصن المسلم التفاعلي</h1>
-        <p>بناءً على منهج الشيخ عبد الرزاق البدر حفظه الله</p>
-        <button class="mode-switch" id="toggleBtn" onclick="toggleMode()">تحويل إلى أذكار المساء 🌙</button>
+<div class="container">
+    <header>
+        <h1 id="title">☀️ أذكار الصباح الصحيحة</h1>
+        <p>بناءً على المنهج العلمي للشيخ عبد الرزاق البدر</p>
+        <button class="mode-btn" id="toggleBtn" onclick="toggleMode()">تحويل للأجواء المسائية 🌙</button>
+    </header>
+
+    <div id="azkar-list"></div>
+
+    <center><button class="reset-btn" onclick="resetProgress()">إعادة ضبط العدادات ليوم جديد</button></center>
+    
+    <div class="benefits-section">
+        <h2 style="text-align: center;">💡 لماذا نذكر الله؟ (فوائد الأذكار)</h2>
+        <div class="benefit-item"><b>تجديد التوحيد:</b> الأذكار ليست مجرد كلمات، بل هي إقرار يومي بوحدانية الله وسلطانه.</div>
+        <div class="benefit-item"><b>تمتين الصلة:</b> كل ذكر هو حبل ممدود بينك وبين خالقك، يقوي ثقتك به وتوكلك عليه.</div>
+        <div class="benefit-item"><b>الحفظ والرعاية:</b> هي الحصن الحصين من الشياطين، والدرع الواقي من شرور الإنس والجن.</div>
+        <div class="benefit-item"><b>طُمأنينة القلب:</b> كما قال تعالى: {أَلَا بِذِكْرِ اللَّهِ تَطْمَئِنُّ الْقُلُوبُ}.</div>
+        <div class="benefit-item"><b>استحضار الافتقار:</b> في الأذكار اعتراف بضعفنا وحاجتنا التامة لتدبير الله ورحمته.</div>
     </div>
 
-    <div class="grid" id="azkarContainer">
-        </div>
+    <footer style="text-align: center; font-size: 0.9em; margin-top: 50px; opacity: 0.7; padding-bottom: 30px;">
+        جميع الأذكار والفوائد مستخلصة من شروحات الشيخ عبد الرزاق البدر حفظه الله.
+    </footer>
+</div>
 
-    <div class="source-note">
-        المصدر: مذكرات الشيخ عبد الرزاق البدر في أذكار الصباح والمساء - تجديد التوحيد وتقوية الصلة بالله.
-    </div>
+<script>
+    const azkar = [
+        { text: "آية الكرسي: {اللَّهُ لَا إِلَهَ إِلَّا هُوَ الْحَيُّ الْقَيُّومُ...}", target: 1, info: "من قرأها حين يصبح أجير من الجن حتى يمسي، ومن قرأها حين يمسي أجير منهم حتى يصبح." },
+        { text: "سورة الإخلاص والمعوذتين (الفلق والناس)", target: 3, info: "تقال ثلاثاً في الصباح والمساء، وهي تكفي المسلم من كل شيء." },
+        { text: "سيد الاستغفار: اللهم أنت ربي لا إله إلا أنت خلقتني وأنا عبدك...", target: 1, info: "من قالها موقناً بها فمات في يومه قبل أن يمسي (أو ليلته قبل أن يصبح) دخل الجنة." },
+        { text: "سبحان الله وبحمده", target: 100, info: "حُطت خطاياه وإن كانت مثل زبد البحر، ولم يأت أحد بأفضل مما جاء به إلا من زاد عليه." },
+        { text: "لا إله إلا الله وحده لا شريك له، له الملك وله الحمد وهو على كل شيء قدير", target: 10, info: "كتب له بها حسنات ومحي عنه سيئات، وكانت له حرزاً من الشيطان." },
+        { text: "اللهم فاطر السماوات والأرض، عالم الغيب والشهادة، رب كل شيء ومليكه.. أعوذ بك من شر نفسي ومن شر الشيطان وشركه..", target: 1, info: "تقال صباحاً ومساءً وعند النوم للوقاية من النفس والشيطان." },
+        { text: "اللهم عافني في بدني، اللهم عافني في سمعي، اللهم عافني في بصري، لا إله إلا أنت", target: 3, info: "إقرار بالتوحيد وطلب العافية في أهم حواس الإنسان." },
+        { text: "بسم الله الذي لا يضر مع اسمه شيء في الأرض ولا في السماء وهو السميع العليم", target: 3, info: "من قالها ثلاثاً لم يضره شيء في يومه أو ليلته." },
+        { text: "يا حي يا قيوم برحمتك أستغيث أصلح لي شأني كله ولا تكلني إلى نفسي طرفة عين", target: 1, info: "من أعظم أدعية الافتقار إلى الله وطلب تدبيره." },
+        { text: "رضيت بالله رباً، وبالإسلام ديناً، وبمحمد صلى الله عليه وسلم نبياً", target: 3, info: "من قالها حين يصبح وحين يمسي كان حقاً على الله أن يرضيه يوم القيامة." },
+        { text: "اللهم إني أسألك علماً نافعاً، ورزقاً طيباً، وعملاً متقبلاً", target: 1, info: "دعاء خاص يُقال بعد صلاة الصبح، لضبط بوصلة اليوم نحو الإنتاج والإخلاص." },
+        { text: "أعوذ بكلمات الله التامات من شر ما خلق", target: 3, info: "تقال خاصة في المساء، من قالها لم تضره حُمة (سمّ) تلك الليلة." }
+    ];
 
-    <script>
-        const azkarData = [
-            { text: "آية الكرسي (مرة واحدة)", target: 1, info: "تُجير من الجن حتى يصبح/يمسي" },
-            { text: "سورة الإخلاص والمعوذتين", target: 3, info: "تكفي من كل شيء" },
-            { text: "اللهم أنت ربي لا إله إلا أنت.. (سيد الاستغفار)", target: 1, info: "موجبة للجنة لمن مات في يومه" },
-            { text: "سبحان الله وبحمده", target: 100, info: "حط الخطايا ورفعة الدرجات" },
-            { text: "لا إله إلا الله وحده لا شريك له..", target: 10, info: "حفظ من الشيطان وأجر عظيم" },
-            { text: "بسم الله الذي لا يضر مع اسمه شيء..", target: 3, info: "حماية من ضرر كل شيء" },
-            { text: "رضيت بالله رباً وبالإسلام ديناً..", target: 3, info: "حق على الله أن يرضيه" },
-            { text: "يا حي يا قيوم برحمتك أستغيث..", target: 1, info: "إصلاح الشأن كله" }
-        ];
+    let isMorning = true;
 
-        let isMorning = true;
-
-        function renderAzkar() {
-            const container = document.getElementById('azkarContainer');
-            container.innerHTML = '';
-            azkarData.forEach((zikr, index) => {
-                container.innerHTML += `
-                    <div class="card" id="card-${index}">
-                        <div class="count-badge">المطلوب: ${zikr.target}</div>
-                        <p>${zikr.text}</p>
-                        <small style="opacity: 0.8">${zikr.info}</small>
-                        <button class="btn-counter" onclick="doCount(${index}, ${zikr.target})">
-                            العدد الحالي: <span id="count-${index}">0</span>
-                        </button>
+    function render() {
+        const list = document.getElementById('azkar-list');
+        list.innerHTML = '';
+        azkar.forEach((zkr, i) => {
+            list.innerHTML += `
+                <div class="card" id="card-${i}">
+                    <div style="font-size: 1.2em; font-weight: bold; line-height: 1.6;">${zkr.text}</div>
+                    <div class="info-text">${zkr.info}</div>
+                    <div class="counter-area">
+                        <span style="font-weight: bold;">المطلوب: ${zkr.target}</span>
+                        <button class="btn-count" onclick="count(${i}, ${zkr.target})">تكرار: <span id="val-${i}">0</span></button>
                     </div>
-                `;
-            });
-        }
+                </div>
+            `;
+        });
+    }
 
-        function doCount(index, target) {
-            const countElement = document.getElementById(`count-${index}`);
-            let current = parseInt(countElement.innerText);
-            if (current < target) {
-                current++;
-                countElement.innerText = current;
-                if (current === target) {
-                    document.getElementById(`card-${index}`).classList.add('completed');
-                }
+    function count(i, target) {
+        let el = document.getElementById(`val-${i}`);
+        let current = parseInt(el.innerText);
+        if (current < target) {
+            current++;
+            el.innerText = current;
+            if (current === target) {
+                document.getElementById(`card-${i}`).classList.add('completed');
+                // ميزة إضافية: اهتزاز بسيط عند الاكتمال
+                if (window.navigator.vibrate) window.navigator.vibrate(50);
             }
         }
+    }
 
-        function toggleMode() {
-            const body = document.getElementById('mainBody');
-            const btn = document.getElementById('toggleBtn');
-            isMorning = !isMorning;
+    function toggleMode() {
+        isMorning = !isMorning;
+        const body = document.getElementById('body');
+        const btn = document.getElementById('toggleBtn');
+        const title = document.getElementById('title');
+        
+        body.className = isMorning ? 'morning' : 'night';
+        title.innerText = isMorning ? '☀️ أذكار الصباح الصحيحة' : '🌙 أذكار المساء الصحيحة';
+        btn.innerText = isMorning ? 'تحويل للأجواء المسائية 🌙' : 'تحويل للأجواء الصباحية ☀️';
+        resetProgress();
+    }
 
-            if (isMorning) {
-                body.className = 'morning';
-                btn.innerText = 'تحويل إلى أذكار المساء 🌙';
-                btn.style.background = '#0d47a1';
-                btn.style.color = 'white';
-            } else {
-                body.className = 'night';
-                btn.innerText = 'تحويل إلى أذكار الصباح ☀️';
-                btn.style.background = '#ffca28';
-                btn.style.color = '#333';
-            }
-            renderAzkar(); // إعادة ضبط العدادات عند التحويل
-        }
+    function resetProgress() {
+        render();
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
 
-        renderAzkar();
-    </script>
+    render();
+</script>
 </body>
 </html>
